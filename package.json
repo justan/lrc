@@ -1,0 +1,23 @@
+{
+  "name": "lrc",
+  "version": "0.1.0",
+  "description": "a javascript lrc parser",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:justan/lrc.git"
+  },
+  "keywords": [
+    "lrc",
+    "lyric",
+    "歌词"
+  ],
+  "author": "justan",
+  "license": "MIT"
+}
