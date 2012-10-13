@@ -7,7 +7,7 @@
     "example": "example"
   },
   "scripts": {
-    "test": "mocha"
+    "test": ""
   },
   "repository": {
     "type": "git",
