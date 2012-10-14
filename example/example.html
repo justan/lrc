@@ -10,7 +10,7 @@
     var $lrcInput = $("#lrc")
       , $out = $("#out")
       , $timer = $("#timer")
-      //, lrc
+      , lrc
       ;
     
     $("#list>li").click(function(i){
@@ -28,7 +28,7 @@
     });
     
     $("#pause").click(function(){
-      lrc.pause();
+      lrc.pauseToggle();
       showTimer.pause();
     })
     
@@ -47,12 +47,14 @@
     var loadLrc = function(url){
       $lrcInput.val('歌词加载中..');
       
-      $.ajax(url || 'lrcs/无能的力量.lrc').done(function(txt){
+      lrc && lrc.stop();
+      showTimer.stop();
+      
+      $.ajax(url || 'lrcs/1.lrc').done(function(txt){
         $lrcInput.val(txt);
         lrc = parse(txt)
       })
     };
-    loadLrc();
     
     var showTimer = (function(){
       var timeStamp, timer
@@ -100,6 +102,8 @@
         $out.empty().append(span.fadeIn('slow'))
       });
     };
+    
+    loadLrc();
   })
   </script>
 </head>
@@ -115,10 +119,10 @@
 </form>
 <div style="overflow: hidden; margin: 0 0 0 20px;">
 <ul id="list">
-	<li>one.lrc</li>
-	<li>无能的力量.lrc</li>
-	<li>完美生活.lrc</li>
-	<li>婚礼的祝福.lrc</li>
+	<li>1.lrc</li>
+	<li>2.lrc</li>
+	<li>3.lrc</li>
+	<li>4.lrc</li>
 </ul>
 <div id="timer"></div>
 <div id="out"></div>
