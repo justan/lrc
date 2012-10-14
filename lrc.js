@@ -1,6 +1,6 @@
 /**
  * lrc parser and player
- * @version 0.1
+ * @version 0.1.0
  */
 
 var Lrc = (function(){
@@ -62,9 +62,10 @@ var Lrc = (function(){
   function findCurLine(time){
     for(var i = 0, l = this.lines.length; i < l; i++){
       if(time <= this.lines[i].time){
-        return i;
+        break;
       }
     }
+    return i;
   }
   
   function focusLine(i){
@@ -76,39 +77,46 @@ var Lrc = (function(){
   
   //lrc stream control and output
   Parser.prototype = {
-      //time: 播放起点
-      play: function(time){
+      //time: 播放起点, skipLast: 是否忽略即将播放歌词的前一条(可能是正在唱的)
+      play: function(time, skipLast){
         var that = this;
+        
         time = time || 0;
         that._startStamp = Date.now() - time;//相对开始时间戳
-        this.state = 1;
+        that.state = 1;
         
-        if(this.isLrc){
-          that.curLine = findCurLine.call(this, time);
-          clearTimeout(this._timer);
+        if(that.isLrc){
+          that.curLine = findCurLine.call(that, time);
           
-          this._timer = setTimeout(function loopy(){
-            focusLine.call(that, that.curLine++);
-            
-            if(that.lines[that.curLine]){
-              that._timer = setTimeout(function(){
-                loopy();
-              }, that.lines[that.curLine].time - (Date.now() - that._startStamp));
-              //}, that.lines[that.curLine].time - that.lines[that.curLine--].time);//一些情况可能用得上
-            }else{
-              //end
-            }
-          }, this.lines[that.curLine].time - time)
+          if(!skipLast){
+            focusLine.call(that, (that.curLine || 1) - 1);
+          }
           
+          if(that.curLine < that.lines.length){
+          
+            clearTimeout(that._timer);
+            that._timer = setTimeout(function loopy(){
+              focusLine.call(that, that.curLine++);
+              
+              if(that.lines[that.curLine]){
+                that._timer = setTimeout(function(){
+                  loopy();
+                }, that.lines[that.curLine].time - (Date.now() - that._startStamp));
+                //}, that.lines[that.curLine].time - that.lines[that.curLine--].time);//一些情况可能用得上
+              }else{
+                //end
+              }
+            }, that.lines[that.curLine].time - time)
+          }
         }
       }
-    , pause: function(){
+    , pauseToggle: function(){
         var now = Date.now();
         if(this.state){
           this.stop();
           this._pauseStamp = now;
         }else{
-          this.play((this._pauseStamp || now) - (this._startStamp || now));
+          this.play((this._pauseStamp || now) - (this._startStamp || now), true);
           delete this._pauseStamp;
         }
       }
@@ -132,6 +140,6 @@ var Lrc = (function(){
 })();
 
 //node.js module
-if(typeof exports !== 'undefined'){
-  exports.Lrc = Lrc;
+if(typeof module !== 'undefined' && this.module !== module){
+  module.exports.Lrc = Lrc;
 }
