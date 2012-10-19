@@ -89,7 +89,7 @@ var Lrc = (function(){
           that.curLine = findCurLine.call(that, time);
           
           if(!skipLast){
-            focusLine.call(that, (that.curLine || 1) - 1);
+            that.curLine && focusLine.call(that, that.curLine - 1);
           }
           
           if(that.curLine < that.lines.length){
