@@ -33,7 +33,8 @@ var Lrc = (function(){
     this.curLine = 0;//
     this.state = 0;// 0: stop, 1: playing
         
-    var res, line, time, lines = lrc.split(/\n/);
+    var res, line, time, lines = lrc.split(/\n/)
+      , _last;
     
     for(var tag in tagsRegMap){
       res = lrc.match(new RegExp('\\[' + tagsRegMap[tag] + ':([^\\]]*)\\]', 'i'));
@@ -43,7 +44,9 @@ var Lrc = (function(){
     timeExp.lastIndex = 0;
     for(var i = 0, l = lines.length; i < l; i++){
       while(time = timeExp.exec(lines[i])){
+        _last = timeExp.lastIndex;
         line = Parser.trim(lines[i].replace(timeExp, ''));
+        timeExp.lastIndex = _last;
         this.lines.push({
             time: time[1] * 60 * 1000 + time[2] * 1000 + (time[3] || 0) * 10
           , originLineNum: i
