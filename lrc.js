@@ -81,7 +81,7 @@ var Lrc = (function(){
   //lrc stream control and output
   Parser.prototype = {
       //time: 播放起点, skipLast: 是否忽略即将播放歌词的前一条(可能是正在唱的)
-      play: function(time, skipLast){
+      play: function(time, skipLast, audioPlayer){
         var that = this;
         
         time = time || 0;
@@ -102,9 +102,13 @@ var Lrc = (function(){
               focusLine.call(that, that.curLine++);
               
               if(that.lines[that.curLine]){
+                if (audioPlayer)
+        					var timeNow = (audioPlayer.currentTime * 1000) - 200;
+        				else
+        					var timeNow = (Date.now() - that._startStamp) - 100;
                 that._timer = setTimeout(function(){
                   loopy();
-                }, that.lines[that.curLine].time - (Date.now() - that._startStamp));
+                }, that.lines[that.curLine].time - timeNow);
                 //}, that.lines[that.curLine].time - that.lines[that.curLine--].time);//一些情况可能用得上
               }else{
                 //end
