@@ -5,7 +5,7 @@
 
 var Lrc = (function(){
   Date.now = Date.now || (new Date).getTime;
-  var timeExp = /\[(\d{2,})\:(\d{2})(?:\.(\d{2}))?\]/g
+  var timeExp = /\[(\d{2,})\:(\d{2})(?:\.(\d{2,3}))?\]/g
     , tagsRegMap = {
         title: 'ti'
       , artist: 'ar'
