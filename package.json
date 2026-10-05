@@ -1,13 +1,13 @@
 {
   "name": "lrc",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "a javascript lrc parser",
   "main": "index.js",
   "directories": {
     "example": "example"
   },
   "scripts": {
-    "test": ""
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",

@@ -28,10 +28,18 @@ function outputHandler(line, extra){
 
 //播放控制
 lrc.play();
-lrc.pauseTogle();
+lrc.pauseToggle();
 lrc.seek(500);
 lrc.stop();
 
 ```
 
 [1]: https://zh.wikipedia.org/wiki/LRC
+
+## 0.1.1
+
+将仓库中已有的解析与播放修复发布到 npm：修复解析时全局正则的
+`lastIndex` 被重置造成的死循环，以及从最后一句之后开始播放时的越界问题。
+支持从指定进度立即输出当前歌词。增加独立进程回归测试，解析卡住时会超时退出。
+
+开发验证：`pnpm test`。
